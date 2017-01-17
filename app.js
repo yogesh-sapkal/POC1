@@ -1,25 +1,11 @@
-function flatten(array, mutable) {
-    var toString = Object.prototype.toString;
-    var arrayTypeStr = '[object Array]';
-    
+function flattenArray(inputArray) {
     var result = [];
-    var nodes = (mutable && array) || array.slice();
-    var node;
-    
-    if (!array.length) {
-        return result;
-    }
-    
-    node = nodes.pop();
-    
-    do {
-        if (toString.call(node) === arrayTypeStr) {
-            nodes.push.apply(nodes, node);
+    for(var i = 0; i < inputArray.length; i++) {
+        if(Array.isArray(inputArray[i])) {
+            result = result.concat(flattenArray(inputArray[i]));
         } else {
-            result.push(node);
+            result.push(inputArray[i]);
         }
-    } while (nodes.length && (node = nodes.pop()) !== undefined);
-
-    result.reverse(); // we reverse result to restore the original order
+    }
     return result;
 }
